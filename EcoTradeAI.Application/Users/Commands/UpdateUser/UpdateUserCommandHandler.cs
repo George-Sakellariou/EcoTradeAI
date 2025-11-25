@@ -77,12 +77,13 @@ public class UpdateUserCommandHandler
                 user.SetProfile(newProfile);
             }
 
-            // Use existing values if new ones not provided
-            var bio = command.Bio ?? user.UserProfile.Bio;
-            var location = command.Location ?? user.UserProfile.Location;
-            var avatarUrl = command.AvatarUrl ?? user.UserProfile.AvatarUrl;
+            // At this point, UserProfile is guaranteed to be non-null
+            // Use null-forgiving operator (!) to tell compiler we've handled the null case
+            var bio = command.Bio ?? user.UserProfile!.Bio;
+            var location = command.Location ?? user.UserProfile!.Location;
+            var avatarUrl = command.AvatarUrl ?? user.UserProfile!.AvatarUrl;
 
-            user.UserProfile.UpdateProfile(bio, location, avatarUrl);
+            user.UserProfile!.UpdateProfile(bio, location, avatarUrl);
         }
 
         // STEP 4: Persist changes
